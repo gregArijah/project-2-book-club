@@ -1,17 +1,19 @@
 
 {{#each books as |book| }}
 <div class="row mb-4">
-  <div class="col-md-5">
+  <div class="col-md-5 project">
     <h2>
       <a href="/book/{{book.id}}">{{book.name}}</a>
     </h2>
     <p>
+      reading this section
       {{book.image}}
       {{book.id}}
       {{book.name}}
       {{book.description}}
+      {{book.review}}
     </p>
-    <p></p>
+     <p>Added by {{book.user.name}}</p>
   </div>
   <div class="col-md-7">
     

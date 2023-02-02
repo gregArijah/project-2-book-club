@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Bookshelf extends Model {}
+class Book extends Model {}
 
-Bookshelf.init(
+Book.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,7 +11,7 @@ Bookshelf.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -27,8 +27,8 @@ Bookshelf.init(
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: 'bookshelf',
+    modelName: 'book',
   }
 );
 
-module.exports = Bookshelf;
+module.exports = Book;

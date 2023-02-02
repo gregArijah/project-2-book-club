@@ -1,87 +1,57 @@
 const router = require('express').Router();
-const { Post, User } = require('../models');
+const { Book, User } = require('../models');
 const withAuth = require('../utils/auth');
 
 
 //GET all books for homepage
 router.get('/', async (req, res) => {
   try {
-    const dbBookData = await Bookshelf.findAll({
+    const bookData = await Book.findAll({
       include: [
         {
-          model: Books,
-          // attributes: ['name'],
+          model: User,
+          attributes: ['name'],
         },
       ],
     });
 
     // Serialize data so the template can read it
     
-    const bookshelves = dbBookshelfData.map((bookshelf) =>
-      bookshelf.get({ plain: true })
+    const books = bookData.map((book) => book.get({ plain: true })
     );
    
 
     // Pass serialized data and session flag into template
     res.render('homepage', { 
-      bookshelves, 
-      LoggedIn: req.session.loggedIn, 
+      books, 
+      loggedIn: req.session.loggedIn, 
     });
   } catch (err) {
     console.log(err)
     res.status(500).json(err);
   }
 });
-// get bookshelf
-router.get('/bookshelf/:id', async (req, res) => {
-     // If the user is not logged in, redirect the user to the login page
-  if (!req.session.loggedIn) {
-    res.redirect('/login');
-  } else {
-    // If the user is logged in, allow them to view the bookshelf
-    try {
-      const dbBookshelfData = await Bookshelf.findByPk(req.params.id, {
-        include: [
-          {
-            model: Books,
-            // attributes: [
-            //   'id',
-            //   'title',
-            //   'artist',
-            //   'exhibition_date',
-            //   'filename',
-            //   'description',
-            // ],
-          },
-        ],
-      });
-      const bookshelf = dbBookshelfData.get({ plain: true });
-      res.render('bookshelf', { bookshelf, loggedIn: req.session.loggedIn });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  }
-});
-
 
 //get book
 router.get('/book/:id', async (req, res) => {
-  // If the user is not logged in, redirect the user to the login page
-  if (!req.session.loggedIn) {
-    res.redirect('/login');
-  } else {
-    // If the user is logged in, allow them to view the book
-    try {
-      const dbBookData = await Book.findByPk(req.params.id);
+  try {
+    const bookData = await Book.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ['name'],
+        },
+      ],
+    });
 
-      const Book = dbBookData.get({ plain: true });
+    const book = bookData.get({ plain: true });
 
-      res.render('book', { book, loggedIn: req.session.loggedIn });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
+    res.render('book', {
+      ...book,
+      logged_in: req.session.logged_in
+    });
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
@@ -91,7 +61,7 @@ router.get('/profile', withAuth, async (req, res) => {
     // Find the logged in user based on the session ID
     const userData = await User.findByPk(req.session.user_id, {
       attributes: { exclude: ['password'] },
-      include: [{ model: Project }],
+      include: [{ model: Book }],
     });
 
     const user = userData.get({ plain: true });
