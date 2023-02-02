@@ -6,10 +6,8 @@
       <a href="/book/{{book.name}}">{{book.name}}</a>
     </h2>
     <p>
-      <span for="img" aria-label="money">💲</span>
-      <!-- Pass needed_funding value to the helper function -->
-      <span class="dollar-amount">{{format_amount book.needed_funding}}</span>
-      needed!
+      <span>by {{book.author}}</span>
+      
     </p>
     <p>Added by {{book.user.name}} on {{format_date book.date_created}}</p>
   </div>
