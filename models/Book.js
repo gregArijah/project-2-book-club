@@ -11,9 +11,9 @@ Book.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
+    name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      //allowNull: false,
     },
     author: {
       type: DataTypes.STRING,
