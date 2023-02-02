@@ -2,10 +2,9 @@ const router = require('express').Router();
 const { Book, User } = require('../models');
 const withAuth = require('../utils/auth');
 
-
-//GET all books for homepage
 router.get('/', async (req, res) => {
   try {
+    // Get all projects and JOIN with user data
     const bookData = await Book.findAll({
       include: [
         {
@@ -16,23 +15,18 @@ router.get('/', async (req, res) => {
     });
 
     // Serialize data so the template can read it
-    
-    const books = bookData.map((book) => book.get({ plain: true })
-    );
-   
+    const books = bookData.map((book) => book.get({ plain: true }));
 
     // Pass serialized data and session flag into template
     res.render('homepage', { 
       books, 
-      loggedIn: req.session.loggedIn, 
+      logged_in: req.session.logged_in 
     });
   } catch (err) {
-    console.log(err)
     res.status(500).json(err);
   }
 });
 
-//get book
 router.get('/book/:id', async (req, res) => {
   try {
     const bookData = await Book.findByPk(req.params.id, {
@@ -61,7 +55,7 @@ router.get('/profile', withAuth, async (req, res) => {
     // Find the logged in user based on the session ID
     const userData = await User.findByPk(req.session.user_id, {
       attributes: { exclude: ['password'] },
-      include: [{ model: Book }],
+      include: [{ model: Project }],
     });
 
     const user = userData.get({ plain: true });
