@@ -1,22 +1,20 @@
-
+<!-- Loop over each object in the projects array -->
 {{#each books as |book| }}
-<div class="row mb-4">
-  <div class="col-md-5 project">
+<div class="row mb-4 project">
+  <div class="col-md-5">
     <h2>
-      <a href="/book/{{book.id}}">{{book.name}}</a>
+      <a href="/book/{{book.name}}">{{book.name}}</a>
     </h2>
     <p>
-      reading this section
-      {{book.image}}
-      {{book.id}}
-      {{book.name}}
-      {{book.description}}
-      {{book.review}}
+      <span>by {{book.author}}</span>
+      
     </p>
-     <p>Added by {{book.user.name}}</p>
+    <p>Added by {{book.user.name}} on {{format_date book.date_created}}</p>
   </div>
   <div class="col-md-7">
-    
+    <p>
+      {{book.description}}
+    </p>
   </div>
 </div>
 {{/each}}

@@ -12,14 +12,27 @@ Book.init(
       autoIncrement: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
+      //allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    date_created: {
+      type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     author: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
-    description: {
-      type: DataTypes.STRING,
+    user_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'user',
+        key: 'id',
+      },
     },
   },
   {
